@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORMULATE // GPA Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-primary: #0a0a0c;
+            --background-secondary: #111114;
+            --accent-primary: #00ffaa;
+            --accent-secondary: #0088ff;
+            --text-primary: #ffffff;
+            --text-secondary: #9494a3;
+            --border-subtle: #242429;
+        }
+
+        * { box-sizing: border-box; transition: 0.3s; }
+        
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--background-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+        nav {
+            width: 280px;
+            background-color: #000;
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            padding: 50px 30px;
+        }
+
+        .brand-identifier {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: var(--accent-primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .author-tag {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            margin-top: 30px;
+        }
+
+        .navigation-link {
+            padding: 12px 0;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid transparent;
+        }
+
+        .navigation-link:hover, .navigation-link.active {
+            color: var(--text-primary);
+        }
+
+        .navigation-link.active {
+            border-bottom: 1px solid var(--accent-primary);
+        }
+
+  
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 80px 10%;
+        }
+
+        .content-container {
+            display: none;
+            animation: contentFadeIn 0.4s ease-out;
+        }
+
+        .content-container.active {
+            display: block;
+        }
+
+        @keyframes contentFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+      
+        .module-card {
+            background-color: var(--background-secondary);
+            border: 1px solid var(--border-subtle);
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            background-color: #000;
+            border: 1px solid var(--border-subtle);
+            padding: 14px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .btn-prime {
+            background-color: var(--accent-primary);
+            color: #000;
+            border: none;
+            padding: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+      
+        #output-area {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-subtle);
+            display: none;
+        }
+
+        .big-stat {
+            font-size: 5rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono';
+            color: var(--text-primary);
+        }
+
+       
+        .geo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .geo-card {
+            background: #0d0d0f;
+            border-left: 3px solid var(--accent-secondary);
+            padding: 20px;
+        }
+
+        .geo-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--accent-secondary);
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .geo-res {
+            margin-top: 15px;
+            font-family: 'JetBrains Mono';
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="brand-identifier">FORMULATE</div>
+        <div class="author-tag">By Inba Jeyakumar</div>
+        
+        <div class="nav-section-label">Grades</div>
+        <div class="navigation-link active" onclick="showView('gpa', this)">GPA Engine</div>
+        
+        <div class="nav-section-label">Geometry</div>
+        <div class="navigation-link" onclick="showView('area', this)">Area</div>
+        <div class="navigation-link" onclick="showView('volume', this)">Volume</div>
+        <div class="navigation-link" onclick="showView('perimeter', this)">Perimeter</div>
+    </nav>
+
+    <main>
+        <div id="view-gpa" class="content-container active">
+            <h1>GPA Engine.</h1>
+            <p class="subtitle">Enter your current stats and this term's classes to see where you'll land.</p>
+            
+            <div class="module-card">
+                <div class="form-grid">
+                    <div>
+                        <label>Current GPA</label>
+                        <input type="number" id="baseGPA" placeholder="0.00" step="0.01">
+                    </div>
+                    <div>
+                        <label>Total Credits</label>
+                        <input type="number" id="baseCredits" placeholder="0">
+                    </div>
+                </div>
+
+                <div id="course-rows">
+                    <label>This Term's Classes</label>
+                    <div class="form-grid" style="margin-top: 5px;">
+                        <input type="text" placeholder="Course Name">
+                        <input type="number" class="g-in" placeholder="Grade (0-4)" step="0.1">
+                        <input type="number" class="c-in" placeholder="Credits">
+                    </div>
+                </div>
+                
+                <button class="btn-ghost" onclick="addCourse()">+ Add Class</button>
+                <button class="btn-prime" style="margin-top: 25px;" onclick="runGPA()">Calculate Now</button>
+
+                <div id="output-area">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <label>New Overall GPA</label>
+                            <div class="big-stat" id="res-total">0.00</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div id="res-term" style="font-family: 'JetBrains Mono'; color: var(--accent-secondary);">Term GPA: 0.00</div>
+                            <p id="vibe-check" style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Ready for input.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-area" class="content-container">
+            <h1>Area Lab.</h1>
+            <p class="subtitle">Quickly find the surface area of your shapes.</p>
+            <div class="geo-grid">
+                <div class="geo-card">
+                    <span class="geo-title">Circle</span>
+                    <input type="number" id="ar-rad" placeholder="Radius" oninput="geo()">
+                    <div class="geo-res" id="out-ar-cir">Area: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <span class="geo-title">Triangle</span>
+                    <input type="number" id="ar-b" placeholder="Base" oninput="geo()">
+                    <input type="number" id="ar-h" placeholder="Height" oninput="geo()" style="margin-top:10px">
+                    <div class="geo-res" id="out-ar-tri">Area: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <span class="geo-title">Hexagon</span>
+                    <input type="number" id="ar-s" placeholder="Side Length" oninput="geo()">
+                    <div class="geo-res" id="out-ar-hex">Area: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <span class="geo-title">Parallelogram</span>
+                    <input type="number" id="ar-pb" placeholder="Base" oninput="geo()">
+                    <input type="number" id="ar-ph" placeholder="Height" oninput="geo()" style="margin-top:10px">
+                    <div class="geo-res" id="out-ar-para">Area: 0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-volume" class="content-container">
+            <h1>Volume Lab.</h1>
+            <p class="subtitle">Work out the space inside 3D objects.</p>
+            <div class="geo-grid">
+                <div class="geo-card">
+                    <span class="geo-title">Sphere</span>
+                    <input type="number" id="vo-r" placeholder="Radius" oninput="geo()">
+                    <div class="geo-res" id="out-vo-sph">Volume: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <span class="geo-title">Cylinder</span>
+                    <input type="number" id="vo-cr" placeholder="Radius" oninput="geo()">
+                    <input type="number" id="vo-ch" placeholder="Height" oninput="geo()" style="margin-top:10px">
+                    <div class="geo-res" id="out-vo-cyl">Volume: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <span class="geo-title">Torus (Donut)</span>
+                    <input type="number" id="vo-tr" placeholder="Major Radius" oninput="geo()">
+                    <input type="number" id="vo-ts" placeholder="Minor Radius" oninput="geo()" style="margin-top:10px">
+                    <div class="geo-res" id="out-vo-tor">Volume: 0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-perimeter" class="content-container">
+            <h1>Perimeter Lab.</h1>
+            <p class="subtitle">Measure the distance around the outside.</p>
+            <div class="geo-grid">
+                <div class="geo-card">
+                    <span class="geo-title">Circumference</span>
+                    <input type="number" id="pe-r" placeholder="Radius" oninput="geo()">
+                    <div class="geo-res" id="out-pe-cir">Result: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <span class="geo-title">Octagon</span>
+                    <input type="number" id="pe-os" placeholder="Side Length" oninput="geo()">
+                    <div class="geo-res" id="out-pe-oct">Result: 0.00</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showView(id, btn) {
+            document.querySelectorAll('.content-container').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + id).classList.add('active');
+            document.querySelectorAll('.navigation-link').forEach(l => l.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function addCourse() {
+            const wrap = document.getElementById('course-rows');
+            const row = document.createElement('div');
+            row.className = "form-grid";
+            row.style.marginTop = "10px";
+            row.innerHTML = `<input type="text" placeholder="Course Name"><input type="number" class="g-in" placeholder="Grade" step="0.1"><input type="number" class="c-in" placeholder="Credits">`;
+            wrap.appendChild(row);
+        }
+
+        function runGPA() {
+            const bG = parseFloat(document.getElementById('baseGPA').value) || 0;
+            const bC = parseFloat(document.getElementById('baseCredits').value) || 0;
+            const gs = document.getElementsByClassName('g-in');
+            const cs = document.getElementsByClassName('c-in');
+            
+            let tP = 0, tC = 0;
+            for(let i=0; i<gs.length; i++) {
+                tP += (parseFloat(gs[i].value) || 0) * (parseFloat(cs[i].value) || 0);
+                tC += (parseFloat(cs[i].value) || 0);
+            }
+
+            const totalC = bC + tC;
+            const final = totalC > 0 ? ((bG * bC) + tP) / totalC : 0;
+            const term = tC > 0 ? tP / tC : 0;
+
+            document.getElementById('output-area').style.display = 'block';
+            document.getElementById('res-total').innerText = final.toFixed(2);
+            document.getElementById('res-term').innerText = "Term GPA: " + term.toFixed(2);
+            
+            const vibe = document.getElementById('vibe-check');
+            if(final >= 3.5) vibe.innerText = "Doing great. Keep it up.";
+            else if(final >= 2.5) vibe.innerText = "You're on track.";
+            else vibe.innerText = "Time to focus more.";
+        }
+
+        function geo() {
+            // Area
+            const r1 = parseFloat(document.getElementById('ar-rad').value) || 0;
+            document.getElementById('out-ar-cir').innerText = "Area: " + (Math.PI * r1 * r1).toFixed(2);
+            
+            const ab = parseFloat(document.getElementById('ar-b').value) || 0;
+            const ah = parseFloat(document.getElementById('ar-h').value) || 0;
+            document.getElementById('out-ar-tri').innerText = "Area: " + (0.5 * ab * ah).toFixed(2);
+
+            const as = parseFloat(document.getElementById('ar-s').value) || 0;
+            document.getElementById('out-ar-hex').innerText = "Area: " + (2.598 * as * as).toFixed(2);
+
+            // Volume
+            const vr = parseFloat(document.getElementById('vo-r').value) || 0;
+            document.getElementById('out-vo-sph').innerText = "Volume: " + (1.333 * Math.PI * Math.pow(vr, 3)).toFixed(2);
+
+            // Perimeter
+            const pr = parseFloat(document.getElementById('pe-r').value) || 0;
+            document.getElementById('out-pe-cir').innerText = "Result: " + (2 * Math.PI * pr).toFixed(2);
+        }
+    </script>
+</body>
+</html>
