@@ -3,395 +3,470 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FORMULATE // GPA Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <title>Formulate // Academic & Geometric Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --background-primary: #0a0a0c;
-            --background-secondary: #111114;
-            --accent-primary: #00ffaa;
-            --accent-secondary: #0088ff;
-            --text-primary: #ffffff;
-            --text-secondary: #9494a3;
-            --border-subtle: #242429;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --brand-primary: #3b82f6;
+            --brand-hover: #2563eb;
+            --success: #10b981;
         }
 
-        * { box-sizing: border-box; transition: 0.3s; }
-        
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--background-primary);
-            color: var(--text-primary);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
         }
 
-
-        nav {
-            width: 280px;
-            background-color: #000;
-            border-right: 1px solid var(--border-subtle);
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
-            padding: 50px 30px;
+            min-height: 100vh;
         }
 
-        .brand-identifier {
-            font-weight: 800;
+        /* Top Navigation Header */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .brand-logo {
+            font-weight: 700;
             font-size: 1.1rem;
-            letter-spacing: 1px;
-            color: var(--accent-primary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .author-tag {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 50px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .nav-section-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            margin-top: 30px;
-        }
-
-        .navigation-link {
-            padding: 12px 0;
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.9rem;
-            border-bottom: 1px solid transparent;
-        }
-
-        .navigation-link:hover, .navigation-link.active {
+            letter-spacing: -0.5px;
             color: var(--text-primary);
         }
 
-        .navigation-link.active {
-            border-bottom: 1px solid var(--accent-primary);
+        .brand-logo span {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 0.9rem;
         }
 
-  
+        nav {
+            display: flex;
+            height: 100%;
+        }
+
+        .nav-link {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            color: var(--brand-primary);
+            border-bottom-color: var(--brand-primary);
+            font-weight: 600;
+        }
+
+        /* Layout Structure */
         main {
+            max-width: 1000px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
             flex: 1;
-            overflow-y: auto;
-            padding: 80px 10%;
         }
 
-        .content-container {
+        .view-panel {
             display: none;
-            animation: contentFadeIn 0.4s ease-out;
+            animation: fadeIn 0.2s ease-out;
         }
 
-        .content-container.active {
+        .view-panel.active {
             display: block;
         }
 
-        @keyframes contentFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
-            font-size: 3.5rem;
-            margin: 0 0 10px 0;
-            font-weight: 800;
-            letter-spacing: -2px;
+        .view-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
         }
 
-        .subtitle {
+        .view-subtitle {
             color: var(--text-secondary);
-            margin-bottom: 40px;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
         }
 
-      
-        .module-card {
-            background-color: var(--background-secondary);
-            border: 1px solid var(--border-subtle);
-            padding: 40px;
+        /* Functional Layout Cards */
+        .workspace-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         label {
-            display: block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input {
             width: 100%;
-            background-color: #000;
-            border: 1px solid var(--border-subtle);
-            padding: 14px;
-            color: #fff;
-            font-family: 'JetBrains Mono', monospace;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            background-color: #fff;
+            outline: none;
+            transition: border-color 0.15s ease;
         }
 
         input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
+            border-color: var(--brand-primary);
         }
 
-        .btn-prime {
-            background-color: var(--accent-primary);
-            color: #000;
+        /* Dynamic Row Style */
+        .dynamic-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .dynamic-row input {
+            flex: 1;
+        }
+
+        /* Professional Clean Buttons */
+        .btn {
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-primary);
+            color: white;
             border: none;
-            padding: 18px;
-            font-weight: 800;
-            cursor: pointer;
             width: 100%;
-            text-transform: uppercase;
+            margin-top: 15px;
+            font-weight: 600;
         }
 
-        .btn-ghost {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
+        .btn-primary:hover {
+            background-color: var(--brand-hover);
+        }
+
+        .btn-secondary {
+            background: none;
+            border: 1px solid var(--border-color);
             color: var(--text-secondary);
-            padding: 10px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
+            padding: 8px 16px;
+            margin-bottom: 20px;
         }
 
-      
-        #output-area {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border-subtle);
-            display: none;
-        }
-
-        .big-stat {
-            font-size: 5rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono';
+        .btn-secondary:hover {
+            background-color: var(--bg-main);
             color: var(--text-primary);
         }
 
-       
-        .geo-grid {
+        /* Data Displays */
+        .summary-box {
+            margin-top: 30px;
+            padding: 20px 25px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .metric-large {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #166534;
+            line-height: 1;
+            margin: 8px 0;
+        }
+
+        .metric-sub {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #14532d;
+        }
+
+        /* Geometry Grids */
+        .geometry-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
         .geo-card {
-            background: #0d0d0f;
-            border-left: 3px solid var(--accent-secondary);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             padding: 20px;
         }
 
-        .geo-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--accent-secondary);
-            font-weight: 700;
+        .geo-card .card-heading {
+            font-size: 0.95rem;
+            font-weight: 600;
             margin-bottom: 15px;
-            display: block;
+            color: var(--text-primary);
         }
 
-        .geo-res {
+        .geo-card input {
+            margin-bottom: 10px;
+        }
+
+        .geo-output {
             margin-top: 15px;
-            font-family: 'JetBrains Mono';
-            color: var(--accent-primary);
             font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--brand-primary);
+            padding-top: 10px;
+            border-top: 1px solid var(--bg-main);
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="brand-identifier">FORMULATE</div>
-        <div class="author-tag">By Inba Jeyakumar</div>
-        
-        <div class="nav-section-label">Grades</div>
-        <div class="navigation-link active" onclick="showView('gpa', this)">GPA Engine</div>
-        
-        <div class="nav-section-label">Geometry</div>
-        <div class="navigation-link" onclick="showView('area', this)">Area</div>
-        <div class="navigation-link" onclick="showView('volume', this)">Volume</div>
-        <div class="navigation-link" onclick="showView('perimeter', this)">Perimeter</div>
-    </nav>
+    <header>
+        <div class="brand-logo">FORMULATE <span>// Tools</span></div>
+        <nav>
+            <button class="nav-link active" onclick="switchView('gpa', this)">GPA Engine</button>
+            <button class="nav-link" onclick="switchView('area', this)">Area Lab</button>
+            <button class="nav-link" onclick="switchView('volume', this)">Volume Lab</button>
+            <button class="nav-link" onclick="switchView('perimeter', this)">Perimeter Lab</button>
+        </nav>
+    </header>
 
     <main>
-        <div id="view-gpa" class="content-container active">
-            <h1>GPA Engine.</h1>
-            <p class="subtitle">Enter your current stats and this term's classes to see where you'll land.</p>
+        <div id="view-gpa" class="view-panel active">
+            <h1 class="view-title">Cumulative GPA Engine</h1>
+            <p class="view-subtitle">Project your cumulative academic standings by compounding current metrics with term updates.</p>
             
-            <div class="module-card">
+            <div class="workspace-card">
                 <div class="form-grid">
-                    <div>
-                        <label>Current GPA</label>
-                        <input type="number" id="baseGPA" placeholder="0.00" step="0.01">
+                    <div class="form-group">
+                        <label>Prior Cumulative GPA (0.0 - 4.0 Scale)</label>
+                        <input type="number" id="baseGPA" placeholder="4.00" step="0.01">
                     </div>
-                    <div>
-                        <label>Total Credits</label>
+                    <div class="form-group">
+                        <label>Prior Total Credits</label>
                         <input type="number" id="baseCredits" placeholder="0">
                     </div>
                 </div>
 
                 <div id="course-rows">
-                    <label>This Term's Classes</label>
-                    <div class="form-grid" style="margin-top: 5px;">
-                        <input type="text" placeholder="Course Name">
-                        <input type="number" class="g-in" placeholder="Grade (0-4)" step="0.1">
-                        <input type="number" class="c-in" placeholder="Credits">
+                    <label style="display: block; margin-bottom: 8px;">Active Term Enrollments</label>
+                    <div class="dynamic-row">
+                        <input type="text" placeholder="Course Title">
+                        <input type="number" class="g-in" placeholder="Numerical Grade (e.g. 95)" max="100" min="0">
+                        <input type="number" class="c-in" placeholder="Credit Value">
                     </div>
                 </div>
                 
-                <button class="btn-ghost" onclick="addCourse()">+ Add Class</button>
-                <button class="btn-prime" style="margin-top: 25px;" onclick="runGPA()">Calculate Now</button>
+                <button class="btn btn-secondary" onclick="addNewRow()">+ Append Course Slot</button>
+                <button class="btn btn-primary" onclick="calculateGPA()">Execute Calculations</button>
 
-                <div id="output-area">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                        <div>
-                            <label>New Overall GPA</label>
-                            <div class="big-stat" id="res-total">0.00</div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div id="res-term" style="font-family: 'JetBrains Mono'; color: var(--accent-secondary);">Term GPA: 0.00</div>
-                            <p id="vibe-check" style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Ready for input.</p>
-                        </div>
-                    </div>
+                <div id="output-area" class="summary-box">
+                    <label>Calculated Cumulative Target</label>
+                    <div class="metric-large" id="res-total">0.00</div>
+                    <div id="res-term" class="metric-sub">Term Calculation: 0.00</div>
+                    <p id="vibe-check" style="font-size: 0.85rem; color: #166534; margin-top: 8px;"></p>
                 </div>
             </div>
         </div>
 
-        <div id="view-area" class="content-container">
-            <h1>Area Lab.</h1>
-            <p class="subtitle">Quickly find the surface area of your shapes.</p>
-            <div class="geo-grid">
+        <div id="view-area" class="view-panel">
+            <h1 class="view-title">Area Evaluation Lab</h1>
+            <p class="view-subtitle">Compute surface boundaries across standard geometric two-dimensional plains.</p>
+            <div class="geometry-grid">
                 <div class="geo-card">
-                    <span class="geo-title">Circle</span>
-                    <input type="number" id="ar-rad" placeholder="Radius" oninput="geo()">
-                    <div class="geo-res" id="out-ar-cir">Area: 0.00</div>
+                    <div class="card-heading">Circle</div>
+                    <input type="number" id="ar-rad" placeholder="Radius (r)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-ar-cir">Area: 0.00</div>
                 </div>
                 <div class="geo-card">
-                    <span class="geo-title">Triangle</span>
-                    <input type="number" id="ar-b" placeholder="Base" oninput="geo()">
-                    <input type="number" id="ar-h" placeholder="Height" oninput="geo()" style="margin-top:10px">
-                    <div class="geo-res" id="out-ar-tri">Area: 0.00</div>
+                    <div class="card-heading">Triangle</div>
+                    <input type="number" id="ar-b" placeholder="Base (b)" oninput="computeGeometry()">
+                    <input type="number" id="ar-h" placeholder="Height (h)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-ar-tri">Area: 0.00</div>
                 </div>
                 <div class="geo-card">
-                    <span class="geo-title">Hexagon</span>
-                    <input type="number" id="ar-s" placeholder="Side Length" oninput="geo()">
-                    <div class="geo-res" id="out-ar-hex">Area: 0.00</div>
+                    <div class="card-heading">Regular Hexagon</div>
+                    <input type="number" id="ar-s" placeholder="Side Length (s)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-ar-hex">Area: 0.00</div>
                 </div>
                 <div class="geo-card">
-                    <span class="geo-title">Parallelogram</span>
-                    <input type="number" id="ar-pb" placeholder="Base" oninput="geo()">
-                    <input type="number" id="ar-ph" placeholder="Height" oninput="geo()" style="margin-top:10px">
-                    <div class="geo-res" id="out-ar-para">Area: 0.00</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-volume" class="content-container">
-            <h1>Volume Lab.</h1>
-            <p class="subtitle">Work out the space inside 3D objects.</p>
-            <div class="geo-grid">
-                <div class="geo-card">
-                    <span class="geo-title">Sphere</span>
-                    <input type="number" id="vo-r" placeholder="Radius" oninput="geo()">
-                    <div class="geo-res" id="out-vo-sph">Volume: 0.00</div>
-                </div>
-                <div class="geo-card">
-                    <span class="geo-title">Cylinder</span>
-                    <input type="number" id="vo-cr" placeholder="Radius" oninput="geo()">
-                    <input type="number" id="vo-ch" placeholder="Height" oninput="geo()" style="margin-top:10px">
-                    <div class="geo-res" id="out-vo-cyl">Volume: 0.00</div>
-                </div>
-                <div class="geo-card">
-                    <span class="geo-title">Torus (Donut)</span>
-                    <input type="number" id="vo-tr" placeholder="Major Radius" oninput="geo()">
-                    <input type="number" id="vo-ts" placeholder="Minor Radius" oninput="geo()" style="margin-top:10px">
-                    <div class="geo-res" id="out-vo-tor">Volume: 0.00</div>
+                    <div class="card-heading">Parallelogram</div>
+                    <input type="number" id="ar-pb" placeholder="Base (b)" oninput="computeGeometry()">
+                    <input type="number" id="ar-ph" placeholder="Height (h)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-ar-para">Area: 0.00</div>
                 </div>
             </div>
         </div>
 
-        <div id="view-perimeter" class="content-container">
-            <h1>Perimeter Lab.</h1>
-            <p class="subtitle">Measure the distance around the outside.</p>
-            <div class="geo-grid">
+        <div id="view-volume" class="view-panel">
+            <h1 class="view-title">Volume Displacement Lab</h1>
+            <p class="view-subtitle">Analyze cubic measurement properties found within three-dimensional models.</p>
+            <div class="geometry-grid">
                 <div class="geo-card">
-                    <span class="geo-title">Circumference</span>
-                    <input type="number" id="pe-r" placeholder="Radius" oninput="geo()">
-                    <div class="geo-res" id="out-pe-cir">Result: 0.00</div>
+                    <div class="card-heading">Sphere</div>
+                    <input type="number" id="vo-r" placeholder="Radius (r)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-vo-sph">Volume: 0.00</div>
                 </div>
                 <div class="geo-card">
-                    <span class="geo-title">Octagon</span>
-                    <input type="number" id="pe-os" placeholder="Side Length" oninput="geo()">
-                    <div class="geo-res" id="out-pe-oct">Result: 0.00</div>
+                    <div class="card-heading">Right Circular Cylinder</div>
+                    <input type="number" id="vo-cr" placeholder="Radius (r)" oninput="computeGeometry()">
+                    <input type="number" id="vo-ch" placeholder="Height (h)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-vo-cyl">Volume: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <div class="card-heading">Torus</div>
+                    <input type="number" id="vo-tr" placeholder="Major Radius (R)" oninput="computeGeometry()">
+                    <input type="number" id="vo-ts" placeholder="Minor Radius (r)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-vo-tor">Volume: 0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-perimeter" class="view-panel">
+            <h1 class="view-title">Perimeter & Linear Metrics</h1>
+            <p class="view-subtitle">Measure the boundary extensions running continuous along shape parameters.</p>
+            <div class="geometry-grid">
+                <div class="geo-card">
+                    <div class="card-heading">Circumference</div>
+                    <input type="number" id="pe-r" placeholder="Radius (r)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-pe-cir">Total Perimeter: 0.00</div>
+                </div>
+                <div class="geo-card">
+                    <div class="card-heading">Regular Octagon</div>
+                    <input type="number" id="pe-os" placeholder="Side Length (s)" oninput="computeGeometry()">
+                    <div class="geo-output" id="out-pe-oct">Total Perimeter: 0.00</div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        function showView(id, btn) {
-            document.querySelectorAll('.content-container').forEach(v => v.classList.remove('active'));
+        function switchView(id, currentBtn) {
+            document.querySelectorAll('.view-panel').forEach(view => view.classList.remove('active'));
             document.getElementById('view-' + id).classList.add('active');
-            document.querySelectorAll('.navigation-link').forEach(l => l.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function addCourse() {
-            const wrap = document.getElementById('course-rows');
-            const row = document.createElement('div');
-            row.className = "form-grid";
-            row.style.marginTop = "10px";
-            row.innerHTML = `<input type="text" placeholder="Course Name"><input type="number" class="g-in" placeholder="Grade" step="0.1"><input type="number" class="c-in" placeholder="Credits">`;
-            wrap.appendChild(row);
-        }
-
-        function runGPA() {
-            const bG = parseFloat(document.getElementById('baseGPA').value) || 0;
-            const bC = parseFloat(document.getElementById('baseCredits').value) || 0;
-            const gs = document.getElementsByClassName('g-in');
-            const cs = document.getElementsByClassName('c-in');
             
-            let tP = 0, tC = 0;
-            for(let i=0; i<gs.length; i++) {
-                tP += (parseFloat(gs[i].value) || 0) * (parseFloat(cs[i].value) || 0);
-                tC += (parseFloat(cs[i].value) || 0);
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+            currentBtn.classList.add('active');
+        }
+
+        function addNewRow() {
+            const container = document.getElementById('course-rows');
+            const row = document.createElement('div');
+            row.className = "dynamic-row";
+            row.innerHTML = `
+                <input type="text" placeholder="Course Title">
+                <input type="number" class="g-in" placeholder="Numerical Grade (e.g. 95)" max="100" min="0">
+                <input type="number" class="c-in" placeholder="Credit Value">
+            `;
+            container.appendChild(row);
+        }
+
+        // Helper function to map percentage grades to a 4.0 scale
+        function convertPercentToGPA(score) {
+            if (score >= 93) return 4.0;
+            if (score >= 90) return 3.7;
+            if (score >= 87) return 3.3;
+            if (score >= 83) return 3.0;
+            if (score >= 80) return 2.7;
+            if (score >= 77) return 2.3;
+            if (score >= 73) return 2.0;
+            if (score >= 70) return 1.7;
+            if (score >= 67) return 1.3;
+            if (score >= 65) return 1.0;
+            return 0.0;
+        }
+
+        function calculateGPA() {
+            const priorGPA = parseFloat(document.getElementById('baseGPA').value) || 0;
+            const priorCredits = parseFloat(document.getElementById('baseCredits').value) || 0;
+            const gradesArray = document.getElementsByClassName('g-in');
+            const creditsArray = document.getElementsByClassName('c-in');
+            
+            let termPoints = 0, termCredits = 0;
+            for(let i=0; i<gradesArray.length; i++) {
+                const numericGrade = parseFloat(gradesArray[i].value) || 0;
+                const convertedGPA = convertPercentToGPA(numericGrade);
+                const currentCredit = parseFloat(creditsArray[i].value) || 0;
+
+                termPoints += convertedGPA * currentCredit;
+                termCredits += currentCredit;
             }
 
-            const totalC = bC + tC;
-            const final = totalC > 0 ? ((bG * bC) + tP) / totalC : 0;
-            const term = tC > 0 ? tP / tC : 0;
+            const totalCredits = priorCredits + termCredits;
+            const absoluteGPA = totalCredits > 0 ? ((priorGPA * priorCredits) + termPoints) / totalCredits : 0;
+            const aggregateTermGPA = termCredits > 0 ? termPoints / termCredits : 0;
 
             document.getElementById('output-area').style.display = 'block';
-            document.getElementById('res-total').innerText = final.toFixed(2);
-            document.getElementById('res-term').innerText = "Term GPA: " + term.toFixed(2);
+            document.getElementById('res-total').innerText = absoluteGPA.toFixed(2);
+            document.getElementById('res-term').innerText = "Term Calculation: " + aggregateTermGPA.toFixed(2);
             
-            const vibe = document.getElementById('vibe-check');
-            if(final >= 3.5) vibe.innerText = "Doing great. Keep it up.";
-            else if(final >= 2.5) vibe.innerText = "You're on track.";
-            else vibe.innerText = "Time to focus more.";
+            const vibeText = document.getElementById('vibe-check');
+            if(absoluteGPA >= 3.5) vibeText.innerText = "Performance falls inside optimal standing tiers.";
+            else if(absoluteGPA >= 2.5) vibeText.innerText = "Performance targets tracking average parameters.";
+            else vibeText.innerText = "Performance points indicate review necessary.";
         }
 
-        function geo() {
-            // Area
+        function computeGeometry() {
+            // Surface Calculations
             const r1 = parseFloat(document.getElementById('ar-rad').value) || 0;
             document.getElementById('out-ar-cir').innerText = "Area: " + (Math.PI * r1 * r1).toFixed(2);
             
@@ -402,13 +477,28 @@
             const as = parseFloat(document.getElementById('ar-s').value) || 0;
             document.getElementById('out-ar-hex').innerText = "Area: " + (2.598 * as * as).toFixed(2);
 
-            // Volume
-            const vr = parseFloat(document.getElementById('vo-r').value) || 0;
-            document.getElementById('out-vo-sph').innerText = "Volume: " + (1.333 * Math.PI * Math.pow(vr, 3)).toFixed(2);
+            const apb = parseFloat(document.getElementById('ar-pb').value) || 0;
+            const aph = parseFloat(document.getElementById('ar-ph').value) || 0;
+            document.getElementById('out-ar-para').innerText = "Area: " + (apb * aph).toFixed(2);
 
-            // Perimeter
+            // Volumetric Calculations
+            const vr = parseFloat(document.getElementById('vo-r').value) || 0;
+            document.getElementById('out-vo-sph').innerText = "Volume: " + ((4/3) * Math.PI * Math.pow(vr, 3)).toFixed(2);
+
+            const vcr = parseFloat(document.getElementById('vo-cr').value) || 0;
+            const vch = parseFloat(document.getElementById('vo-ch').value) || 0;
+            document.getElementById('out-vo-cyl').innerText = "Volume: " + (Math.PI * vcr * vcr * vch).toFixed(2);
+
+            const vtr = parseFloat(document.getElementById('vo-tr').value) || 0;
+            const vts = parseFloat(document.getElementById('vo-ts').value) || 0;
+            document.getElementById('out-vo-tor').innerText = "Volume: " + (2 * Math.PI * Math.PI * vtr * vts * vts).toFixed(2);
+
+            // Linear Perimeter Calculations
             const pr = parseFloat(document.getElementById('pe-r').value) || 0;
-            document.getElementById('out-pe-cir').innerText = "Result: " + (2 * Math.PI * pr).toFixed(2);
+            document.getElementById('out-pe-cir').innerText = "Total Perimeter: " + (2 * Math.PI * pr).toFixed(2);
+
+            const pos = parseFloat(document.getElementById('pe-os').value) || 0;
+            document.getElementById('out-pe-oct').innerText = "Total Perimeter: " + (8 * pos).toFixed(2);
         }
     </script>
 </body>
