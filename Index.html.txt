@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Formulate | Cumulative GPA & Geometry Shape Calculator</title>
+    <title>Formulate | Cumulative GPA & Geometry Shape Calculator </title>
     <style>
         /* original theme i was using */
         :root {
