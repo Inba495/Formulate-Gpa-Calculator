@@ -2,802 +2,252 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulate | Cumulative GPA & Geometry Shape Calculator</title>
-    <meta name="description" content="Free online tool to calculate your cumulative GPA, along with shape calculators for area, volume, and perimeter.">
-    <meta name="keywords" content="GPA calculator, cumulative GPA, area calculator, volume calculator, perimeter formula">
-
+    <title>Formulate v2 (temp copy)</title>
     <style>
+        /* original theme i was using */
         :root {
-            --bg-app: #f8fafc;
-            --bg-card: #ffffff;
-            --border-color: #e2e8f0;
-            --border-focus: #4f46e5;
-            --text-dark: #0f172a;
-            --text-light: #64748b;
-            --primary: #4f46e5;
-            --success: #0f766e;
-            --success-bg: #f0fdfa;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            --bg-main: #121620;
+            --card-color: #1a202c;
+            --border: #2d3748;
         }
 
         body {
-            background-color: var(--bg-app);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background: var(--bg-main);
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
         }
 
-        header {
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
+        /* shifted this left slightly so it's not a perfectly centered card */
+        .container {
+            max-width: 600px;
+            margin: 30px 20px;
+            background: var(--card-color);
+            padding: 20px;
+            border: 1px solid var(--border);
         }
 
-        .brand {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        h2 { margin-bottom: 15px; font-size: 20px; }
 
-        .brand span {
-            color: var(--text-light);
-            font-weight: 400;
-            font-size: 0.85rem;
-            background: #f1f5f9;
-            padding: 3px 8px;
-            border-radius: 4px;
+        .tab-header {
+            border-bottom: 2px solid #2d3748;
+            margin-bottom: 20px;
         }
-
-        .nav-cluster {
-            display: flex;
-            height: 100%;
-            gap: 4px;
-        }
-
-        .tab-trigger {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            padding: 0 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            height: 100%;
-            position: relative;
-            transition: color 0.2s ease;
-        }
-
-        .tab-trigger:hover {
-            color: var(--text-dark);
-        }
-
-        .tab-trigger.active {
-            color: var(--primary);
-        }
-
-        .tab-trigger.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 20px;
-            right: 20px;
-            height: 2px;
-            background-color: var(--primary);
-        }
-
-        .workspace-body {
-            max-width: 1100px;
-            width: 100%;
-            margin: 40px auto;
-            padding: 0 24px;
-            flex: 1;
-        }
-
-        .view-panel {
-            display: none;
-        }
-
-        .view-panel.active {
-            display: block;
-        }
-
-        .view-header {
-            margin-bottom: 32px;
-        }
-
-        .view-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            letter-spacing: -0.02em;
-            margin-bottom: 4px;
-        }
-
-        .view-desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .gpa-workspace {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 32px;
-            align-items: start;
-        }
-
-        .panel-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 32px;
-        }
-
-        .input-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .input-block {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-block label {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.92rem;
-            color: var(--text-dark);
-            background-color: #fff;
-            outline: none;
-            transition: all 0.15s ease;
-        }
-
-        input:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 1px var(--border-focus);
-        }
-
-        .dynamic-list-header {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .row-item {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .action-bar {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-primary {
-            background-color: var(--text-dark);
-            color: #fff;
-            border: none;
-            flex: 1;
-        }
-
-        .btn-primary:hover {
-            background-color: #1e293b;
-        }
-
-        .btn-secondary {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            color: var(--text-light);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--text-light);
-            color: var(--text-dark);
-        }
-
-        .gpa-summary-panel {
-            background: #0f172a;
-            color: #fff;
-            border-radius: 12px;
-            padding: 32px;
-            position: sticky;
-            top: 40px;
-            display: none;
-        }
-
-        .gpa-summary-panel label {
-            color: #94a3b8;
-            font-size: 0.7rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .big-gpa {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1;
-            margin: 16px 0;
-            letter-spacing: -0.03em;
-        }
-
-        .sub-gpa {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            border-top: 1px solid #334155;
-            padding-top: 16px;
-            margin-top: 16px;
-        }
-
-        .status-badge {
+        .tab-link {
             display: inline-block;
-            margin-top: 12px;
-            font-size: 0.8rem;
-            color: #38bdf8;
-            font-weight: 500;
-        }
-
-        /* Geometry Layout */
-        .geo-split-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 40px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 40px;
-        }
-
-        .geo-menu {
-            border-right: 1px solid var(--border-color);
-            background: #f8fafc;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .geo-menu-item {
-            padding: 12px 16px;
-            border-radius: 6px;
+            padding: 10px 15px;
+            color: #718096;
+            text-decoration: none;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-light);
-            transition: all 0.15s;
+            font-size: 14px;
+        }
+        .tab-link.active {
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 2px solid #63b3ed; /* switched to standard bootstrap-ish blue */
+            margin-bottom: -2px;
         }
 
-        .geo-menu-item:hover {
-            color: var(--text-dark);
-            background: #f1f5f9;
+        .input-group {
+            margin-bottom: 12px;
         }
-
-        .geo-menu-item.active {
-            background: #fff;
-            color: var(--primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
-            border: 1px solid var(--border-color);
-        }
-
-        .geo-content-area {
-            padding: 40px;
-        }
-
-        .geo-pane {
-            display: none;
-        }
-
-        .geo-pane.active {
+        .input-group label {
             display: block;
-        }
-
-        .pane-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .inputs-cluster {
-            max-width: 340px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .live-output-plate {
-            background: var(--success-bg);
-            border: 1px solid #ccfbf1;
-            padding: 18px 24px;
-            border-radius: 8px;
-            display: inline-flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .live-output-plate span {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--success);
-            font-weight: 700;
-        }
-
-        .live-output-plate div {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--success);
-        }
-
-        /* Video Section */
-        .video-insight-section {
-            margin-top: 48px;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 40px;
-        }
-
-        .video-header-group {
-            margin-bottom: 20px;
-        }
-
-        .video-section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-dark);
+            font-size: 12px;
+            color: #a0aec0;
             margin-bottom: 4px;
         }
-
-        .video-section-desc {
-            color: var(--text-light);
-            font-size: 0.88rem;
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
-            background: #000;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .input-group input, .input-group select {
             width: 100%;
-            height: 100%;
-            border: 0;
+            padding: 8px;
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            color: #fff;
         }
 
-        .citation-block {
-            margin-top: 12px;
-            font-size: 0.78rem;
-            color: var(--text-light);
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .citation-block strong {
-            color: var(--text-dark);
+        /* local override because i hated the generic button look */
+        .submit-btn {
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
             font-weight: 600;
+        }
+        .submit-btn:hover { background: #2b6cb0; }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 12px;
+            background: #2d3748;
+            border: 1px solid #4a5568;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">Formulate <span>v2.2</span></div>
-        <div class="nav-cluster">
-            <button class="tab-trigger active" onclick="switchView('gpa-view', this)">GPA Calculator</button>
-            <button class="tab-trigger" onclick="switchView('area-view', this)">Area</button>
-            <button class="tab-trigger" onclick="switchView('volume-view', this)">Volume</button>
-            <button class="tab-trigger" onclick="switchView('perimeter-view', this)">Perimeter</button>
-        </div>
-    </header>
-
-    <div class="workspace-body">
+    <div class="container">
+        <!-- left the old name here, whatever -->
+        <div style="font-size: 12px; color: #4a5568; margin-bottom: 5px;">Formulate Utility App</div>
         
-        <div id="gpa-view" class="view-panel active">
-            <div class="view-header">
-                <h1 class="view-title">Cumulative GPA Calculator</h1>
-                <p class="view-desc">Combine your current semester grades with your past school totals.</p>
+        <div class="tab-header">
+            <span class="tab-link active" onclick="switchTab('gpa')">GPA Weighting</span>
+            <span class="tab-link" onclick="switchTab('geo')">Geometry Volumes</span>
+            <!-- <span class="tab-link" style="color:#4a5568;">Algebra (TODO)</span> -->
+        </div>
+
+        <!-- GPA PANEL -->
+        <div id="panel-gpa">
+            <div class="input-group">
+                <label>Prior Cumulative GPA</label>
+                <input type="number" id="prev-gpa" step="0.01" value="0.00">
             </div>
+            <div class="input-group">
+                <label>Prior Earned Credits</label>
+                <input type="number" id="prev-creds" value="0">
+            </div>
+            <div class="input-group" style="margin-top: 20px;"> <!-- added loose spacing inline -->
+                <label>Current Term Quality Points</label>
+                <input type="number" id="term-pts" step="0.01">
+            </div>
+            <div class="input-group">
+                <label>Current Term Credits</label>
+                <input type="number" id="term-creds">
+            </div>
+            <button class="submit-btn" onclick="runGPACalc()">Run Calculation</button>
             
-            <div class="gpa-workspace">
-                <div class="panel-card">
-                    <div class="input-split">
-                        <div class="input-block">
-                            <label>Past Cumulative GPA</label>
-                            <input type="number" id="oldGPA" placeholder="0.00" step="0.01">
-                        </div>
-                        <div class="input-block">
-                            <label>Past Credits Earned</label>
-                            <input type="number" id="oldCredits" placeholder="0">
-                        </div>
-                    </div>
-
-                    <div>
-                        <span class="dynamic-list-header">Current Classes</span>
-                        <div id="gpa-rows-container">
-                            <div class="row-item">
-                                <input type="text" placeholder="Course Name">
-                                <input type="number" class="grade-field" placeholder="Grade %">
-                                <input type="number" class="credit-field" placeholder="Credits">
-                            </div>
-                        </div>
-                        
-                        <div class="action-bar">
-                            <button class="btn btn-secondary" onclick="addCourseRow()">+ Add Class</button>
-                            <button class="btn btn-primary" onclick="runGPAEngine()">Calculate GPA</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="gpa-summary-box" class="gpa-summary-panel">
-                    <label>Your Total GPA</label>
-                    <div class="big-gpa" id="cum-gpa-val">0.00</div>
-                    <div id="term-gpa-val" class="sub-gpa">This Semester's GPA: 0.00</div>
-                    <div id="msg-val" class="status-badge"></div>
-                </div>
-            </div>
-
-            <div class="video-insight-section">
-                <div class="video-header-group">
-                    <h3 class="video-section-title">Reference Video: How GPA works</h3>
-                    <p class="video-section-desc">Learn about weighted vs unweighted grades and how to calculate your scores by hand.</p>
-                </div>
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/fSgbybUshas" title="How to Calculate GPA" allowfullscreen></iframe>
-                </div>
-                <div class="citation-block">
-                    <span>Source:</span> <strong>Invicta Academic Insights</strong>
-                </div>
-            </div>
+            <div id="gpa-out" class="result-box" style="display:none;"></div>
         </div>
 
-        <div id="area-view" class="view-panel">
-            <div class="view-header">
-                <h1 class="view-title">Area Calculator</h1>
-                <p class="view-desc">Calculate the area of common flat shapes.</p>
+        <!-- GEOMETRY PANEL -->
+        <div id="panel-geo" style="display:none;">
+            <div class="input-group">
+                <label>Target Object Shape</label>
+                <select id="shape-select" onchange="toggleShapeInputs()">
+                    <option value="torus">Torus (Donut)</option>
+                    <option value="sphere">Sphere (Ball)</option>
+                </select>
             </div>
-            <div class="geo-split-layout">
-                <div class="geo-menu">
-                    <div class="geo-menu-item active" onclick="switchSubPane('area', 'a-circle', this)">Circle</div>
-                    <div class="geo-menu-item" onclick="switchSubPane('area', 'a-triangle', this)">Triangle</div>
-                    <div class="geo-menu-item" onclick="switchSubPane('area', 'a-hexagon', this)">Hexagon</div>
-                    <div class="geo-menu-item" onclick="switchSubPane('area', 'a-parallelogram', this)">Parallelogram</div>
+
+            <div id="wrap-torus">
+                <div class="input-group">
+                    <label>Major Radius (R)</label>
+                    <input type="number" id="torus-R" step="any">
                 </div>
-                <div class="geo-content-area">
-                    <div id="a-circle" class="geo-pane area-pane active">
-                        <h3 class="pane-title">Circle Area</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="c-rad" placeholder="Radius" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Area</span><div id="out-c-area">0.00</div></div>
-                    </div>
-                    <div id="a-triangle" class="geo-pane area-pane">
-                        <h3 class="pane-title">Triangle Area</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="t-base" placeholder="Base Length" oninput="runGeometryEngine()">
-                            <input type="number" id="t-height" placeholder="Height" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Area</span><div id="out-t-area">0.00</div></div>
-                    </div>
-                    <div id="a-hexagon" class="geo-pane area-pane">
-                        <h3 class="pane-title">Regular Hexagon Area</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="h-side" placeholder="Side Length" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Area</span><div id="out-h-area">0.00</div></div>
-                    </div>
-                    <div id="a-parallelogram" class="geo-pane area-pane">
-                        <h3 class="pane-title">Parallelogram Area</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="p-base" placeholder="Base" oninput="runGeometryEngine()">
-                            <input type="number" id="p-height" placeholder="Height" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Area</span><div id="out-p-area">0.00</div></div>
-                    </div>
+                <div class="input-group">
+                    <label>Minor Radius (r)</label>
+                    <input type="number" id="torus-r" step="any">
                 </div>
             </div>
 
-            <div class="video-insight-section">
-                <div class="video-header-group">
-                    <h3 class="video-section-title">Concept Overview: Understanding Area</h3>
-                    <p class="video-section-desc">A quick guide to 2D space measurement and using square units.</p>
-                </div>
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/xCdxURXMdFY" title="Understanding Area" allowfullscreen></iframe>
-                </div>
-                <div class="citation-block">
-                    <span>Source:</span> <strong>Math Antics Curriculum Series</strong>
+            <div id="wrap-sphere" style="display:none;">
+                <div class="input-group">
+                    <label>Radius (r)</label>
+                    <input type="number" id="sphere-radius" step="any">
                 </div>
             </div>
+
+            <button class="submit-btn" style="background:#4a5568;" onclick="runVolumeCalc()">Calculate Volume</button>
+            
+            <div id="geo-out" class="result-box" style="display:none;"></div>
         </div>
-
-        <div id="volume-view" class="view-panel">
-            <div class="view-header">
-                <h1 class="view-title">Volume Calculator</h1>
-                <p class="view-desc">Find the total capacity inside 3D shapes.</p>
-            </div>
-            <div class="geo-split-layout">
-                <div class="geo-menu">
-                    <div class="geo-menu-item active" onclick="switchSubPane('volume', 'v-sphere', this)">Sphere</div>
-                    <div class="geo-menu-item" onclick="switchSubPane('volume', 'v-cylinder', this)">Cylinder</div>
-                    <div class="geo-menu-item" onclick="switchSubPane('volume', 'v-torus', this)">Torus (Donut Shape)</div>
-                </div>
-                <div class="geo-content-area">
-                    <div id="v-sphere" class="geo-pane volume-pane active">
-                        <h3 class="pane-title">Sphere Volume</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="s-rad" placeholder="Radius" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Volume</span><div id="out-s-vol">0.00</div></div>
-                    </div>
-                    <div id="v-cylinder" class="geo-pane volume-pane">
-                        <h3 class="pane-title">Cylinder Volume</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="cyl-rad" placeholder="Base Radius" oninput="runGeometryEngine()">
-                            <input type="number" id="cyl-height" placeholder="Height" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Volume</span><div id="out-cyl-vol">0.00</div></div>
-                    </div>
-                    <div id="v-torus" class="geo-pane volume-pane">
-                        <h3 class="pane-title">Torus Volume</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="tor-maj" placeholder="Major Radius (R)" oninput="runGeometryEngine()">
-                            <input type="number" id="tor-min" placeholder="Minor Radius (r)" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Volume</span><div id="out-tor-vol">0.00</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-insight-section">
-                <div class="video-header-group">
-                    <h3 class="video-section-title">Concept Overview: Understanding Volume</h3>
-                    <p class="video-section-desc">Learn about 3D shapes, space capacities, and cubic units.</p>
-                </div>
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/qJwecTgce6c" title="Understanding Volume" allowfullscreen></iframe>
-                </div>
-                <div class="citation-block">
-                    <span>Source:</span> <strong>Math Antics</strong>
-                </div>
-            </div>
-        </div>
-
-        <div id="perimeter-view" class="view-panel">
-            <div class="view-header">
-                <h1 class="view-title">Perimeter Calculator</h1>
-                <p class="view-desc">Measure the distance around the outside of shapes.</p>
-            </div>
-            <div class="geo-split-layout">
-                <div class="geo-menu">
-                    <div class="geo-menu-item active" onclick="switchSubPane('perimeter', 'p-circle', this)">Circumference (Circle)</div>
-                    <div class="geo-menu-item" onclick="switchSubPane('perimeter', 'p-octagon', this)">Octagon Outer Boundary</div>
-                </div>
-                <div class="geo-content-area">
-                    <div id="p-circle" class="geo-pane perimeter-pane active">
-                        <h3 class="pane-title">Circle Circumference</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="peri-rad" placeholder="Radius" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Distance Around</span><div id="out-circle-peri">0.00</div></div>
-                    </div>
-                    <div id="p-octagon" class="geo-pane perimeter-pane">
-                        <h3 class="pane-title">Octagon Perimeter</h3>
-                        <div class="inputs-cluster">
-                            <input type="number" id="oct-side" placeholder="Side Length" oninput="runGeometryEngine()">
-                        </div>
-                        <div class="live-output-plate"><span>Total Distance Around</span><div id="out-oct-peri">0.00</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-insight-section">
-                <div class="video-header-group">
-                    <h3 class="video-section-title">Concept Overview: Understanding Perimeter</h3>
-                    <p class="video-section-desc">Learn how to track lines and measure outer paths on physical boundaries.</p>
-                </div>
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/AAY1bsazcgM" title="Understanding Perimeter" allowfullscreen></iframe>
-                </div>
-                <div class="citation-block">
-                    <span>Source:</span> <strong>Math Antics</strong>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        function switchView(targetId, selector) {
-            document.querySelectorAll('.view-panel').forEach(pane => pane.classList.remove('active'));
-            document.querySelectorAll('.tab-trigger').forEach(trigger => trigger.classList.remove('active'));
+        function switchTab(target) {
+            // lazy tab switcher, just updates active state directly
+            const links = document.getElementsByClassName('tab-link');
+            links[0].classList.remove('active');
+            links[1].classList.remove('active');
             
-            document.getElementById(targetId).classList.add('active');
-            selector.classList.add('active');
-        }
+            document.getElementById('panel-gpa').style.display = 'none';
+            document.getElementById('panel-geo').style.display = 'none';
 
-        function switchSubPane(group, targetPaneId, selector) {
-            document.querySelectorAll(`.${group}-pane`).forEach(pane => pane.classList.remove('active'));
-            selector.parentElement.querySelectorAll('.geo-menu-item').forEach(item => item.classList.remove('active'));
-            
-            document.getElementById(targetPaneId).classList.add('active');
-            selector.classList.add('active');
-        }
-
-        function addCourseRow() {
-            const wrap = document.getElementById('gpa-rows-container');
-            const row = document.createElement('div');
-            row.className = "row-item";
-            row.innerHTML = `
-                <input type="text" placeholder="Course Name">
-                <input type="number" class="grade-field" placeholder="Grade %">
-                <input type="number" class="credit-field" placeholder="Credits">
-            `;
-            wrap.appendChild(row);
-        }
-
-        function percentToScales(pct) {
-            if (pct >= 93) return 4.0;
-            if (pct >= 90) return 3.7;
-            if (pct >= 87) return 3.3;
-            if (pct >= 83) return 3.0;
-            if (pct >= 80) return 2.7;
-            if (pct >= 77) return 2.3;
-            if (pct >= 73) return 2.0;
-            if (pct >= 70) return 1.7;
-            if (pct >= 67) return 1.3;
-            if (pct >= 65) return 1.0;
-            return 0.0;
-        }
-
-        function runGPAEngine() {
-            const oldGPA = parseFloat(document.getElementById('oldGPA').value) || 0;
-            const oldCredits = parseFloat(document.getElementById('oldCredits').value) || 0;
-            
-            const gInputs = document.querySelectorAll('.grade-field');
-            const cInputs = document.querySelectorAll('.credit-field');
-            
-            let currentPoints = 0;
-            let currentCredits = 0;
-
-            for (let i = 0; i < gInputs.length; i++) {
-                const grade = parseFloat(gInputs[i].value) || 0;
-                const weight = percentToScales(grade);
-                const credits = parseFloat(cInputs[i].value) || 0;
-
-                currentPoints += (weight * credits);
-                currentCredits += credits;
-            }
-
-            const collectiveCredits = oldCredits + currentCredits;
-            const absoluteGPA = collectiveCredits > 0 ? ((oldGPA * oldCredits) + currentPoints) / collectiveCredits : 0;
-            const partialGPA = currentCredits > 0 ? currentPoints / currentCredits : 0;
-
-            document.getElementById('gpa-summary-box').style.display = 'block';
-            document.getElementById('cum-gpa-val').innerText = absoluteGPA.toFixed(2);
-            document.getElementById('term-gpa-val').innerText = "Semester GPA: " + partialGPA.toFixed(2);
-            
-            const messagePlate = document.getElementById('msg-val');
-            if (absoluteGPA >= 3.5) {
-                messagePlate.innerText = "Excellent academic standing!";
-            } else if (absoluteGPA >= 2.5) {
-                messagePlate.innerText = "Good progress. Keep it up.";
+            if(target === 'gpa') {
+                links[0].classList.add('active');
+                document.getElementById('panel-gpa').style.display = 'block';
             } else {
-                messagePlate.innerText = "Warning: GPA has dropped below recommended levels.";
+                links[1].classList.add('active');
+                document.getElementById('panel-geo').style.display = 'block';
             }
         }
 
-        function runGeometryEngine() {
-            // Areas Panel
-            const cRad = parseFloat(document.getElementById('c-rad').value) || 0;
-            document.getElementById('out-c-area').innerText = (Math.PI * cRad * cRad).toFixed(2);
+        function toggleShapeInputs() {
+            var type = document.getElementById('shape-select').value;
+            if(type === 'torus') {
+                document.getElementById('wrap-torus').style.display = 'block';
+                document.getElementById('wrap-sphere').style.display = 'none';
+            } else {
+                document.getElementById('wrap-torus').style.display = 'none';
+                document.getElementById('wrap-sphere').style.display = 'block';
+            }
+        }
+
+        function runGPACalc() {
+            // grabbed these directly inside the runner instead of storing clean globals
+            var pGpa = parseFloat(document.getElementById('prev-gpa').value) || 0;
+            var pCreds = parseFloat(document.getElementById('prev-creds').value) || 0;
+            var tPts = parseFloat(document.getElementById('term-pts').value) || 0;
+            var tCreds = parseFloat(document.getElementById('term-creds').value) || 0;
+
+            var box = document.getElementById('gpa-out');
+            box.style.display = 'block';
+            box.style.color = '#fff';
+
+            if (pGpa < 0 || pGpa > 4 || pCreds < 0 || tPts < 0 || tCreds < 0) {
+                box.style.color = '#fc8181';
+                box.innerText = "Error: Negative numbers or impossible GPA entered.";
+                return;
+            }
+
+            var totalCredits = pCreds + tCreds;
+            if(totalCredits === 0) {
+                box.innerText = "No credits calculated yet.";
+                return;
+            }
+
+            var finalGpa = ((pGpa * pCreds) + tPts) / totalCredits;
             
-            const tBase = parseFloat(document.getElementById('t-base').value) || 0;
-            const tHeight = parseFloat(document.getElementById('t-height').value) || 0;
-            document.getElementById('out-t-area').innerText = (0.5 * tBase * tHeight).toFixed(2);
+            // output formats directly to HTML string clumsily
+            box.innerHTML = "<strong>New Cum GPA:</strong> " + finalGpa.toFixed(3) + "<br><span style='font-size:12px;color:#a0aec0;'>Total credits recorded: " + totalCredits + "</span>";
+        }
 
-            const hSide = parseFloat(document.getElementById('h-side').value) || 0;
-            document.getElementById('out-h-area').innerText = (2.59807 * hSide * hSide).toFixed(2);
+        function runVolumeCalc() {
+            var shape = document.getElementById('shape-select').value;
+            var box = document.getElementById('geo-out');
+            box.style.display = 'block';
+            box.style.color = '#fff';
 
-            const pBase = parseFloat(document.getElementById('p-base').value) || 0;
-            const pHeight = parseFloat(document.getElementById('p-height').value) || 0;
-            document.getElementById('out-p-area').innerText = (pBase * pHeight).toFixed(2);
+            if(shape === 'torus') {
+                var R = parseFloat(document.getElementById('torus-R').value);
+                var r = parseFloat(document.getElementById('torus-r').value);
 
-            // Volumes Panel
-            const sRad = parseFloat(document.getElementById('s-rad').value) || 0;
-            document.getElementById('out-s-vol').innerText = ((4/3) * Math.PI * Math.pow(sRad, 3)).toFixed(2);
+                if(isNaN(R) || isNaN(r) || R <= 0 || r <= 0) {
+                    box.style.color = '#fc8181';
+                    box.innerText = "Must provide positive values.";
+                    return;
+                }
+                if(r >= R) {
+                    box.style.color = '#fc8181';
+                    box.innerText = "Minor radius can't be bigger than major radius.";
+                    return;
+                }
 
-            const cylRad = parseFloat(document.getElementById('cyl-rad').value) || 0;
-            const cylHeight = parseFloat(document.getElementById('cyl-height').value) || 0;
-            document.getElementById('out-cyl-vol').innerText = (Math.PI * cylRad * cylRad * cylHeight).toFixed(2);
-
-            const torMaj = parseFloat(document.getElementById('tor-maj').value) || 0;
-            const torMin = parseFloat(document.getElementById('tor-min').value) || 0;
-            document.getElementById('out-tor-vol').innerText = (2 * Math.PI * Math.PI * torMaj * torMin * torMin).toFixed(2);
-
-            // Perimeters Panel
-            const periRad = parseFloat(document.getElementById('peri-rad').value) || 0;
-            document.getElementById('out-circle-peri').innerText = (2 * Math.PI * periRad).toFixed(2);
-
-            const octSide = parseFloat(document.getElementById('oct-side').value) || 0;
-            document.getElementById('out-oct-peri').innerText = (8 * octSide).toFixed(2);
+                // plain text pi values because why not
+                var vol = 2 * Math.PI * Math.PI * R * (r * r);
+                box.innerHTML = "Volume calculation: <strong>" + vol.toFixed(4) + "</strong>";
+            } else {
+                var rad = parseFloat(document.getElementById('sphere-radius').value);
+                if(isNaN(rad) || rad <= 0) {
+                    box.style.color = '#fc8181';
+                    box.innerText = "Invalid radius metric.";
+                    return;
+                }
+                var vol = (4/3) * Math.PI * Math.pow(rad, 3);
+                box.innerHTML = "Volume calculation: <strong>" + vol.toFixed(4) + "</strong>";
+            }
         }
     </script>
-
-<section style="max-width: 800px; margin: 40px auto; padding: 20px; font-family: sans-serif; line-height: 1.6; color: #333;">
-    <hr style="border: 0; border-top: 1px solid #ccc; margin-bottom: 30px;">
-    
-    <h2>How to Calculate Cumulative GPA & Geometry Formulas</h2>
-    <p>Welcome to Formulate, your all-in-one digital workspace for academic tracking and geometric calculations. Whether you are managing your semester grades or solving complex spatial dimensions, our free tools provide instant accuracy.</p>
-    
-    <h3>Understanding Your Cumulative GPA</h3>
-    <p>Your cumulative grade point average represents your overall academic performance across multiple grading periods. To calculate cumulative GPA manually, you divide the total quality points earned by your total attempted credits. Our online GPA tool handles weighted and unweighted values simultaneously, allowing you to seamlessly blend past school totals with your current semester classes to track your academic standing.</p>
-    
-    <h3>Essential Geometry Formula Reference Guide</h3>
-    <p>Need a quick math shortcut? Just type in your numbers and my shape calculators will find the answers for you instantly!</p>
-    <ul>
-        <li><strong>Area Formulas:</strong> Find 2D space measurements using square units. For a circle, use <em>πr²</em>. For triangles, apply <em>½ × base × height</em>. Parallelograms use <em>base × height</em>.</li>
-        <li><strong>Volume Formulas:</strong> Calculate 3D space capacity in cubic units. A sphere is determined by <em>(4/3)πr³</em>, while a cylinder requires <em>πr²h</em>.</li>
-        <li><strong>Perimeter and Circumference:</strong> Track outer boundaries and physical paths. Circle circumference equals <em>2πr</em>, while regular polygons require multiplying the side length by the total number of outer boundaries.</li>
-    </ul>
-</section>
-
 </body>
 </html>
