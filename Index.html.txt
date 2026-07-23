@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<meta name="robots" content="index, follow">
+<title>Free Online GPA Calculator | Calculate Your High School & College Grades</title>
+<meta name="description" content="Easily calculate your cumulative high school or college GPA. Input your grades and credits to track your academic progress instantly. Free and easy to use.">
+
+
     <title>Formulate | Cumulative GPA & Geometry Shape Calculator </title>
     <style>
         /* original theme i was using */
