@@ -1,108 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 <meta name="robots" content="index, follow">
-<title>Free Online GPA Calculator | Calculate Your High School & College Grades</title>
-<meta name="description" content="Easily calculate your cumulative high school or college GPA. Input your grades and credits to track your academic progress instantly. Free and easy to use.">
+<title>GPA & Geometry Calculator Tool</title>
+<meta name="description" content="Calculate cumulative GPA and geometric shapes easily.">
 
+<style>
+    :root {
+        --bg-main: #121620;
+        --card-color: #1a202c;
+        --border: #2d3748;
+    }
 
-    <title>Formulate | Cumulative GPA & Geometry Shape Calculator </title>
-    <style>
-        /* original theme i was using */
-        :root {
-            --bg-main: #121620;
-            --card-color: #1a202c;
-            --border: #2d3748;
-        }
+    body {
+        background: var(--bg-main);
+        color: #e2e8f0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
 
-        body {
-            background: var(--bg-main);
-            color: #e2e8f0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
+    .container {
+        max-width: 580px; /* adjusted width slightly */
+        margin: 25px 15px;
+        background: var(--card-color);
+        padding: 18px;
+        border: 1px solid var(--border);
+    }
 
-        /* shifted this left slightly so it's not a perfectly centered card */
-        .container {
-            max-width: 600px;
-            margin: 30px 20px;
-            background: var(--card-color);
-            padding: 20px;
-            border: 1px solid var(--border);
-        }
+    h2 { margin-bottom: 12px; font-size: 19px; }
 
-        h2 { margin-bottom: 15px; font-size: 20px; }
+    .tab-header {
+        border-bottom: 2px solid #2d3748;
+        margin-bottom: 15px;
+    }
+    .tab-link {
+        display: inline-block;
+        padding: 8px 12px;
+        color: #718096;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .tab-link.active {
+        color: #fff;
+        font-weight: 600;
+        border-bottom: 2px solid #63b3ed;
+        margin-bottom: -2px;
+    }
 
-        .tab-header {
-            border-bottom: 2px solid #2d3748;
-            margin-bottom: 20px;
-        }
-        .tab-link {
-            display: inline-block;
-            padding: 10px 15px;
-            color: #718096;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .tab-link.active {
-            color: #fff;
-            font-weight: bold;
-            border-bottom: 2px solid #63b3ed; /* switched to standard bootstrap-ish blue */
-            margin-bottom: -2px;
-        }
+    .input-group {
+        margin-bottom: 10px;
+    }
+    .input-group label {
+        display: block;
+        font-size: 12px;
+        color: #a0aec0;
+        margin-bottom: 3px;
+    }
+    .input-group input, .input-group select {
+        width: 98%;
+        padding: 7px;
+        background: #2d3748;
+        border: 1px solid #4a5568;
+        color: #fff;
+        border-radius: 2px;
+    }
 
-        .input-group {
-            margin-bottom: 12px;
-        }
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: #a0aec0;
-            margin-bottom: 4px;
-        }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 8px;
-            background: #2d3748;
-            border: 1px solid #4a5568;
-            color: #fff;
-        }
+    .submit-btn {
+        background: #3182ce;
+        color: #fff;
+        border: none;
+        padding: 9px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+    .submit-btn:hover { background: #2b6cb0; }
 
-        /* local override because i hated the generic button look */
-        .submit-btn {
-            background: #3182ce;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .submit-btn:hover { background: #2b6cb0; }
+    .result-box {
+        margin-top: 15px;
+        padding: 10px;
+        background: #2d3748;
+        border: 1px solid #4a5568;
+        font-size: 14px;
+    }
 
-        .result-box {
-            margin-top: 20px;
-            padding: 12px;
-            background: #2d3748;
-            border: 1px solid #4a5568;
-        }
-    </style>
+    .video-section {
+        margin-top: 20px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+    }
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        margin-bottom: 4px;
+        background: #000;
+    }
+    .video-container iframe {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        border: 0;
+    }
+    .video-credit {
+        font-size: 11px;
+        color: #718096;
+        margin-bottom: 12px;
+    }
+
+    .info-paragraph {
+        margin-top: 15px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+        line-height: 1.4;
+        color: #a0aec0;
+    }
+</style>
 </head>
 <body>
 
     <div class="container">
-        <!-- left the old name here, whatever -->
-        <div style="font-size: 12px; color: #4a5568; margin-bottom: 5px;">Formulate Utility App</div>
+        <div style="font-size: 11px; color: #4a5568; margin-bottom: 6px;">Formulate Utility App v1.2</div>
         
         <div class="tab-header">
-            <span class="tab-link active" onclick="switchTab('gpa')">GPA Weighting</span>
-            <span class="tab-link" onclick="switchTab('geo')">Geometry Volumes</span>
-            <!-- <span class="tab-link" style="color:#4a5568;">Algebra (TODO)</span> -->
+            <span id="tab-btn-gpa" class="tab-link active" onclick="switchTab('gpa')">GPA Weighting</span>
+            <span id="tab-btn-geo" class="tab-link" onclick="switchTab('geo')">Geometry Calculator</span>
         </div>
 
-        <!-- GPA PANEL -->
         <div id="panel-gpa">
             <div class="input-group">
                 <label>Prior Cumulative GPA</label>
@@ -112,7 +141,7 @@
                 <label>Prior Earned Credits</label>
                 <input type="number" id="prev-creds" value="0">
             </div>
-            <div class="input-group" style="margin-top: 20px;"> <!-- added loose spacing inline -->
+            <div class="input-group" style="margin-top: 15px;">
                 <label>Current Term Quality Points</label>
                 <input type="number" id="term-pts" step="0.01">
             </div>
@@ -123,19 +152,37 @@
             <button class="submit-btn" onclick="runGPACalc()">Run Calculation</button>
             
             <div id="gpa-out" class="result-box" style="display:none;"></div>
+
+            <div class="video-section">
+                <div style="font-size:13px; font-weight:bold; margin-bottom:8px; color:#a0aec0;">Helpful Videos on GPA</div>
+                
+                <div style="font-size:12px; margin-bottom:4px; color:#e2e8f0;">How to Calculate Grade Point Average (4.0 Scale)</div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/0p4rEImJqZU" allowfullscreen></iframe>
+                </div>
+                <div class="video-credit">Credit: Illustrative Tutor on YouTube</div>
+
+                <div style="font-size:12px; margin-bottom:4px; color:#e2e8f0;">Cumulative GPA Walkthrough</div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/i6dKZsLM7qg" allowfullscreen></iframe>
+                </div>
+                <div class="video-credit">Credit: Illustrative Tutor on YouTube</div>
+            </div>
         </div>
 
-        <!-- GEOMETRY PANEL -->
         <div id="panel-geo" style="display:none;">
             <div class="input-group">
                 <label>Target Object Shape</label>
                 <select id="shape-select" onchange="toggleShapeInputs()">
                     <option value="torus">Torus (Donut)</option>
                     <option value="sphere">Sphere (Ball)</option>
+                    <option value="rectangle">Rectangle (2D)</option>
+                    <option value="circle">Circle (2D)</option>
+                    <option value="cylinder">Cylinder (3D)</option>
                 </select>
             </div>
 
-            <div id="wrap-torus">
+            <div id="wrap-torus" class="shape-wrap">
                 <div class="input-group">
                     <label>Major Radius (R)</label>
                     <input type="number" id="torus-R" step="any">
@@ -146,55 +193,93 @@
                 </div>
             </div>
 
-            <div id="wrap-sphere" style="display:none;">
+            <div id="wrap-sphere" class="shape-wrap" style="display:none;">
                 <div class="input-group">
                     <label>Radius (r)</label>
                     <input type="number" id="sphere-radius" step="any">
                 </div>
             </div>
 
-            <button class="submit-btn" style="background:#4a5568;" onclick="runVolumeCalc()">Calculate Volume</button>
+            <div id="wrap-rectangle" class="shape-wrap" style="display:none;">
+                <div class="input-group">
+                    <label>Length (l)</label>
+                    <input type="number" id="rect-length" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Width (w)</label>
+                    <input type="number" id="rect-width" step="any">
+                </div>
+            </div>
+
+            <div id="wrap-circle" class="shape-wrap" style="display:none;">
+                <div class="input-group">
+                    <label>Radius (r)</label>
+                    <input type="number" id="circle-radius" step="any">
+                </div>
+            </div>
+
+            <div id="wrap-cylinder" class="shape-wrap" style="display:none;">
+                <div class="input-group">
+                    <label>Base Radius (r)</label>
+                    <input type="number" id="cyl-radius" step="any">
+                </div>
+                <div class="input-group">
+                    <label>Height (h)</label>
+                    <input type="number" id="cyl-height" step="any">
+                </div>
+            </div>
+
+            <button class="submit-btn" style="background:#4a5568;" onclick="runVolumeCalc()">Calculate</button>
             
             <div id="geo-out" class="result-box" style="display:none;"></div>
+
+            <div class="info-paragraph">
+                <strong>Quick Guide to the Formulas:</strong><br>
+                For flat 2D shapes like a <strong>rectangle</strong>, area is just length × width, and perimeter is adding up all four sides (2l + 2w). For a <strong>circle</strong>, area is πr² and the distance around it (circumference) is 2πr.<br><br>
+                For 3D stuff, a <strong>sphere's</strong> volume uses (4/3)πr³. A <strong>cylinder</strong> calculates volume using the base circle area times height (πr²h), plus surface area by adding the top/bottom caps to the side wall. A <strong>torus</strong> uses 2π²Rr².
+            </div>
         </div>
     </div>
 
     <script>
-        function switchTab(target) {
-            // lazy tab switcher, just updates active state directly
-            const links = document.getElementsByClassName('tab-link');
-            links[0].classList.remove('active');
-            links[1].classList.remove('active');
-            
-            document.getElementById('panel-gpa').style.display = 'none';
-            document.getElementById('panel-geo').style.display = 'none';
+        // lazy helper function 
+        function getVal(id) {
+            var v = parseFloat(document.getElementById(id).value);
+            return isNaN(v) ? 0 : v;
+        }
 
-            if(target === 'gpa') {
-                links[0].classList.add('active');
-                document.getElementById('panel-gpa').style.display = 'block';
+        function switchTab(t) {
+            document.getElementById('panel-gpa').style.display = t === 'gpa' ? 'block' : 'none';
+            document.getElementById('panel-geo').style.display = t === 'geo' ? 'block' : 'none';
+            
+            if (t === 'gpa') {
+                document.getElementById('tab-btn-gpa').classList.add('active');
+                document.getElementById('tab-btn-geo').classList.remove('active');
             } else {
-                links[1].classList.add('active');
-                document.getElementById('panel-geo').style.display = 'block';
+                document.getElementById('tab-btn-geo').classList.add('active');
+                document.getElementById('tab-btn-gpa').classList.remove('active');
             }
         }
 
         function toggleShapeInputs() {
-            var type = document.getElementById('shape-select').value;
-            if(type === 'torus') {
-                document.getElementById('wrap-torus').style.display = 'block';
-                document.getElementById('wrap-sphere').style.display = 'none';
-            } else {
-                document.getElementById('wrap-torus').style.display = 'none';
-                document.getElementById('wrap-sphere').style.display = 'block';
+            var sel = document.getElementById('shape-select').value;
+            var wraps = document.querySelectorAll('.shape-wrap');
+            
+            // hide all
+            for(var i=0; i < wraps.length; i++) {
+                wraps[i].style.display = 'none';
             }
+
+            // show selected target
+            var activeWrap = document.getElementById('wrap-' + sel);
+            if(activeWrap) activeWrap.style.display = 'block';
         }
 
         function runGPACalc() {
-            // grabbed these directly inside the runner instead of storing clean globals
-            var pGpa = parseFloat(document.getElementById('prev-gpa').value) || 0;
-            var pCreds = parseFloat(document.getElementById('prev-creds').value) || 0;
-            var tPts = parseFloat(document.getElementById('term-pts').value) || 0;
-            var tCreds = parseFloat(document.getElementById('term-creds').value) || 0;
+            var pGpa = getVal('prev-gpa');
+            var pCreds = getVal('prev-creds');
+            var tPts = getVal('term-pts');
+            var tCreds = getVal('term-creds');
 
             var box = document.getElementById('gpa-out');
             box.style.display = 'block';
@@ -202,20 +287,18 @@
 
             if (pGpa < 0 || pGpa > 4 || pCreds < 0 || tPts < 0 || tCreds < 0) {
                 box.style.color = '#fc8181';
-                box.innerText = "Error: Negative numbers or impossible GPA entered.";
+                box.innerText = "Error: Please check your inputs. Numbers cannot be negative or over 4.0 GPA.";
                 return;
             }
 
-            var totalCredits = pCreds + tCreds;
-            if(totalCredits === 0) {
-                box.innerText = "No credits calculated yet.";
+            var totalCreds = pCreds + tCreds;
+            if(totalCreds <= 0) {
+                box.innerText = "Enter at least 1 credit hour to compute.";
                 return;
             }
 
-            var finalGpa = ((pGpa * pCreds) + tPts) / totalCredits;
-            
-            // output formats directly to HTML string clumsily
-            box.innerHTML = "<strong>New Cum GPA:</strong> " + finalGpa.toFixed(3) + "<br><span style='font-size:12px;color:#a0aec0;'>Total credits recorded: " + totalCredits + "</span>";
+            var finalGpa = ((pGpa * pCreds) + tPts) / totalCreds;
+            box.innerHTML = "<strong>New Cum GPA:</strong> " + finalGpa.toFixed(3) + "<br><span style='font-size:12px;color:#a0aec0;'>Total credits: " + totalCreds + "</span>";
         }
 
         function runVolumeCalc() {
@@ -225,32 +308,61 @@
             box.style.color = '#fff';
 
             if(shape === 'torus') {
-                var R = parseFloat(document.getElementById('torus-R').value);
-                var r = parseFloat(document.getElementById('torus-r').value);
+                var R = getVal('torus-R');
+                var r = getVal('torus-r');
 
-                if(isNaN(R) || isNaN(r) || R <= 0 || r <= 0) {
+                if(R <= 0 || r <= 0 || r >= R) {
                     box.style.color = '#fc8181';
-                    box.innerText = "Must provide positive values.";
+                    box.innerText = "Check radiuses. R must be bigger than r and both > 0.";
                     return;
                 }
-                if(r >= R) {
+                var v = 2 * Math.PI * Math.PI * R * (r * r);
+                box.innerHTML = "Volume: <strong>" + v.toFixed(4) + "</strong>";
+            } 
+            else if(shape === 'sphere') {
+                var r = getVal('sphere-radius');
+                if(r <= 0) {
                     box.style.color = '#fc8181';
-                    box.innerText = "Minor radius can't be bigger than major radius.";
+                    box.innerText = "Enter a positive radius.";
                     return;
                 }
-
-                // plain text pi values because why not
-                var vol = 2 * Math.PI * Math.PI * R * (r * r);
-                box.innerHTML = "Volume calculation: <strong>" + vol.toFixed(4) + "</strong>";
-            } else {
-                var rad = parseFloat(document.getElementById('sphere-radius').value);
-                if(isNaN(rad) || rad <= 0) {
+                var v = (4/3) * Math.PI * Math.pow(r, 3);
+                box.innerHTML = "Volume: <strong>" + v.toFixed(4) + "</strong>";
+            } 
+            else if(shape === 'rectangle') {
+                var l = getVal('rect-length');
+                var w = getVal('rect-width');
+                if(l <= 0 || w <= 0) {
                     box.style.color = '#fc8181';
-                    box.innerText = "Invalid radius metric.";
+                    box.innerText = "Length and width must be greater than 0.";
                     return;
                 }
-                var vol = (4/3) * Math.PI * Math.pow(rad, 3);
-                box.innerHTML = "Volume calculation: <strong>" + vol.toFixed(4) + "</strong>";
+                var a = l * w;
+                var p = 2 * (l + w);
+                box.innerHTML = "Area: <strong>" + a.toFixed(4) + "</strong><br>Perimeter: <strong>" + p.toFixed(4) + "</strong>";
+            } 
+            else if(shape === 'circle') {
+                var r = getVal('circle-radius');
+                if(r <= 0) {
+                    box.style.color = '#fc8181';
+                    box.innerText = "Enter a valid radius.";
+                    return;
+                }
+                var a = Math.PI * r * r;
+                var p = 2 * Math.PI * r;
+                box.innerHTML = "Area: <strong>" + a.toFixed(4) + "</strong><br>Perimeter (Circumference): <strong>" + p.toFixed(4) + "</strong>";
+            } 
+            else if(shape === 'cylinder') {
+                var r = getVal('cyl-radius');
+                var h = getVal('cyl-height');
+                if(r <= 0 || h <= 0) {
+                    box.style.color = '#fc8181';
+                    box.innerText = "Radius and height must be positive.";
+                    return;
+                }
+                var v = Math.PI * r * r * h;
+                var sa = (2 * Math.PI * r * h) + (2 * Math.PI * r * r);
+                box.innerHTML = "Volume: <strong>" + v.toFixed(4) + "</strong><br>Surface Area: <strong>" + sa.toFixed(4) + "</strong>";
             }
         }
     </script>
